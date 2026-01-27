@@ -1,0 +1,18 @@
+# Foundry
+/broadcast
+/cache
+/out
+/lib
+/crytic-export
+/echidna
+
+# Environment
+.env
+.env.*
+*.key
+*.secret
+
+# OS / Editor
+.DS_Store
+.idea
+.vscode
