@@ -8,7 +8,6 @@ contract DeployLinxirToken is Script {
     function run() external {
         vm.startBroadcast();
 
-        // ⚠️ Inserisci qui gli address reali o dummy
         address presale = address(0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2);
         address staking = address(0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
         address liquidity = address(0xe6eDBEa1C67834B196e1cf558F00D40483E4Dc33);
