@@ -39,7 +39,7 @@ Key features:
 - Audit-oriented structure and comments
 
 Mainnet:
-LinxirToken: 0x3D5556bc4d339a46456b42eBf1cf0F7c59BeE70A
+LinxirToken: 0x1bd05590ab5cb8Aa541a0F997Ba0B40f9570124C
 
 ---
 
@@ -61,7 +61,7 @@ Key features:
 - Treasury-based fund collection
 
 Mainnet:
-LinxirPresale: 0x7668a4bF179588C193A53640099c4a9352bfA5A0
+LinxirPresale: 0xC7C2626C1387A366EC2c353d8aeD786327710e05
 
 ---
 
@@ -81,7 +81,7 @@ Key features:
 - Anti-abuse timing restrictions
 
 Mainnet:
-LinxirStaking: 0x73C2B64E122A0250ccF5F1bd67213FE25CB8a585
+LinxirStaking: 0xCBbB18386812c765be4f8B3Afc896Bb1DdA49bF4
 
 ---
 
@@ -100,7 +100,7 @@ Key features:
 - Designed for future gaming mechanics
 
 Mainnet:
-LinxirGaming: 0x49575B70164CbB7e18E7a8A415Ebb8519eBe5535
+LinxirGaming: 0xf6e5F6b4a679375eBAe963B1FB9B978268f8556f
 
 ---
 
@@ -171,7 +171,7 @@ Smart contracts may evolve as the project progresses.
 
 ## 👤 Author
 
-Linxir Core Team
+Linxir Team
 
 
 
