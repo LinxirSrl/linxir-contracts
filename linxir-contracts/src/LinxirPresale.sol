@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./LinxirToken.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -13,6 +14,9 @@ import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.so
  *         supporting payments in ETH and USDT, promo codes, and vesting integration.
  */
 contract LinxirPresale is Ownable, ReentrancyGuard {
+
+    using SafeERC20 for IERC20;
+
     // Reference to Linxir token (must implement vestTransferFromWallet logic)
     LinxirToken public immutable token;
     // USDT token used for purchase
@@ -25,6 +29,9 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
 
     // Token decimals (LXR has 18 decimals)
     uint256 public constant TOKEN_DECIMALS = 1e18;
+
+    /// @notice Maximum allowed staleness for Chainlink ETH/USD price
+    uint256 public constant MAX_PRICE_DELAY = 10 minutes;
 
     // Max purchase in USD equivalent per transaction
     uint256 public maxPurchaseUSD = 1_000_000 * 1e18;
@@ -77,7 +84,7 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
         phases.push(PresalePhase(start, end, startPrice, endPrice));
     }
 
-    /// @notice Purchase tokens using ETH without promo code
+    /// @notice Purchase tokens using ETH
     function buyWithETH() external payable nonReentrant {
         require(msg.value > 0, "Zero ETH");
         uint256 ethPriceUSD = getLatestETHPrice();
@@ -88,17 +95,16 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
         require(success, "ETH transfer failed");
     }
 
-    /// @notice Purchase tokens using USDT without promo code
+    /// @notice Purchase tokens using USDT
     function buyWithUSDT(uint256 usdtAmount) external nonReentrant {
         require(usdtAmount > 0, "Zero USDT");
-        require(
-                   usdt.transferFrom(msg.sender, treasury, usdtAmount),
-                   "USDT transfer failed"
-               );
+
+        usdt.safeTransferFrom(msg.sender, treasury, usdtAmount);
 
         uint256 usdAmount = usdtAmount * 1e12; // USDT has 6 decimals → normalize to 1e18
         _processPurchase(msg.sender, usdAmount, "USDT");
     }
+
 
     /// @dev Core logic to process purchase amount across phases
     function _processPurchase(
@@ -163,8 +169,19 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
 
     /// @notice Get latest ETH/USD price from Chainlink (converted to 1e18)
     function getLatestETHPrice() public view returns (uint256) {
-        (, int256 price, , , ) = ethUsdPriceFeed.latestRoundData();
+        (
+            uint80 roundId,
+            int256 price,
+            ,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        ) = ethUsdPriceFeed.latestRoundData();
+
         require(price > 0, "Invalid price");
+        require(updatedAt != 0, "Incomplete round");
+        require(answeredInRound >= roundId, "Stale round");
+        require(block.timestamp - updatedAt <= MAX_PRICE_DELAY, "Stale price");
+
         return uint256(price) * 1e10;
     }
 
