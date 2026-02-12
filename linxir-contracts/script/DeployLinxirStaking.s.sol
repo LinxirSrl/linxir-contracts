@@ -10,7 +10,7 @@ contract DeployLinxirStaking is Script {
         vm.startBroadcast();
 
         // ✅ Indirizzo reale del token Linxir già deployato
-        address tokenAddress = 0x3D5556bc4d339a46456b42eBf1cf0F7c59BeE70A;
+        address tokenAddress = 0x1bd05590ab5cb8Aa541a0F997Ba0B40f9570124C;
 
         // 🏗️ Deploy contratto staking
         LinxirStaking staking = new LinxirStaking(tokenAddress);
