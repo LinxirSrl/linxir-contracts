@@ -30,8 +30,10 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
     // Token decimals (LXR has 18 decimals)
     uint256 public constant TOKEN_DECIMALS = 1e18;
 
-    /// @notice Maximum allowed staleness for Chainlink ETH/USD price
-    uint256 public constant MAX_PRICE_DELAY = 10 minutes;
+    /// @notice Maximum allowed staleness for Chainlink ETH/USD price (in seconds)
+    uint256 public maxPriceDelay;
+    
+    event MaxPriceDelayUpdated(uint256 newDelay);
 
     // Max purchase in USD equivalent per transaction
     uint256 public maxPurchaseUSD = 1_000_000 * 1e18;
@@ -65,6 +67,9 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
         usdt = IERC20(_usdt);
         treasury = _treasury;
         ethUsdPriceFeed = AggregatorV3Interface(_ethUsdPriceFeed);
+
+        // Default price delay = 1 hour
+        maxPriceDelay = 1 hours;
 
         // Initialize presale phases
         _addPhase(0 * TOKEN_DECIMALS, 64_000_000 * TOKEN_DECIMALS, 1e17, 13e16);    // $0.10 → $0.13
@@ -180,7 +185,7 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
         require(price > 0, "Invalid price");
         require(updatedAt != 0, "Incomplete round");
         require(answeredInRound >= roundId, "Stale round");
-        require(block.timestamp - updatedAt <= MAX_PRICE_DELAY, "Stale price");
+        require(block.timestamp - updatedAt <= maxPriceDelay, "Stale price");
 
         return uint256(price) * 1e10;
     }
@@ -202,6 +207,15 @@ contract LinxirPresale is Ownable, ReentrancyGuard {
     /// @notice Set max USD equivalent purchase
     function setMaxPurchaseUSD(uint256 amount) external onlyOwner {
         maxPurchaseUSD = amount;
+    }
+
+    /// @notice Update max allowed price delay (1 to 6 hours)
+    /// @param hoursDelay Number of hours (integer between 1 and 6)
+    function setMaxPriceDelay(uint8 hoursDelay) external onlyOwner {
+        require(hoursDelay >= 1 && hoursDelay <= 6, "Invalid delay");
+        maxPriceDelay = uint256(hoursDelay) * 1 hours;
+
+        emit MaxPriceDelayUpdated(maxPriceDelay);
     }
 
     /// @dev Prevent direct ETH transfer
