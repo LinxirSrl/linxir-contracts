@@ -6,7 +6,7 @@ import {LinxirGaming} from "../src/LinxirGaming.sol";
 
 contract DeployLinxirGaming is Script {
     function run() external {
-        address tokenAddress = 0x1bd05590ab5cb8Aa541a0F997Ba0B40f9570124C;
+        address tokenAddress = 0xd5f0b6A6AE5987AA8efa20572e1AA42A20e56F09;
 
         vm.startBroadcast();
 
