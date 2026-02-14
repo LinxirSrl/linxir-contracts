@@ -39,7 +39,7 @@ Key features:
 - Audit-oriented structure and comments
 
 Mainnet:
-LinxirToken: 0x1bd05590ab5cb8Aa541a0F997Ba0B40f9570124C
+LinxirToken: 0xd5f0b6A6AE5987AA8efa20572e1AA42A20e56F09
 
 ---
 
@@ -61,7 +61,7 @@ Key features:
 - Treasury-based fund collection
 
 Mainnet:
-LinxirPresale: 0xC7C2626C1387A366EC2c353d8aeD786327710e05
+LinxirPresale: 0xd5f86184C99041CBefa63Dc55a11D67126581584
 
 ---
 
@@ -81,7 +81,7 @@ Key features:
 - Anti-abuse timing restrictions
 
 Mainnet:
-LinxirStaking: 0xCBbB18386812c765be4f8B3Afc896Bb1DdA49bF4
+LinxirStaking: 0xA3d08878bd6425C5B43CFcd55515C268F4107BCB
 
 ---
 
@@ -100,7 +100,7 @@ Key features:
 - Designed for future gaming mechanics
 
 Mainnet:
-LinxirGaming: 0xf6e5F6b4a679375eBAe963B1FB9B978268f8556f
+LinxirGaming: 0x47d1340f3335AcAdF65e87Aefb4A055A1773f8D6
 
 ---
 
